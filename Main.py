@@ -8,6 +8,8 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.backends.backend_agg as agg
 
+import pylab
+
 from pygame.locals import *
 
 # JSON
@@ -62,10 +64,12 @@ def main():
     success = []
 
     playing = True
+    isGraphMade = False
 
     while True: # Main game loop
 
-        screen.fill(BLACK)
+        if not isGraphMade:
+            screen.fill(BLACK)
 
         # Create rectangle & segments on bottom of screen
         if playing:
@@ -81,6 +85,28 @@ def main():
             for note in notes:
                 note.draw()
                 note.move()
+
+        if not playing and not isGraphMade:
+            fig = pylab.figure(figsize=[8, 6], dpi=100, facecolor = (0.3, 0.3, 0.3))
+            ax = fig.gca()
+            ax.set_facecolor((0.3, 0.3, 0.3))
+            ax.bar([1, 2, 3], [3, 3, 3])
+
+            canvas = agg.FigureCanvasAgg(fig)
+            canvas.draw()
+            renderer = canvas.get_renderer()
+            raw_data = renderer.tostring_rgb()
+
+            size = canvas.get_width_height()
+
+            surf = pygame.image.fromstring(raw_data, size, "RGB")
+            screen.blit(surf, (0,0))
+
+            isGraphMade = True
+
+
+
+
 
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN and playing: # Checks each key
