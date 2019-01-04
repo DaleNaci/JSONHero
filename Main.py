@@ -1,7 +1,13 @@
 import pygame, sys
+
 import time
 import json
 import random
+
+import matplotlib
+matplotlib.use("Agg")
+import matplotlib.backends.backend_agg as agg
+
 from pygame.locals import *
 
 # JSON
@@ -33,7 +39,7 @@ def main():
     pygame.mixer.init()
     pygame.font.init()
 
-    bebasNeue = pygame.font.Font('Fonts/BebasNeue.ttf', 20)
+    bebasNeue = pygame.font.Font('Fonts/BebasNeue.ttf', 21)
 
     screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
     pygame.display.set_caption('JSON Hero')
@@ -65,7 +71,7 @@ def main():
         # pygame.draw.rect(screen, GRAY, [box_X, box_Y, 100, 100], 0)
         # box_Y += 1
 
-        if framecount % random.choice([15, 30, 45, 60]) == 0:
+        if framecount % random.choice([10, 15, 20]) == 0:
             newNote = Note(random.choice(jsonData), screen, bebasNeue)
             notes.append(newNote)
         framecount += 1
@@ -76,24 +82,37 @@ def main():
 
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN: # Checks each key
-                threshold = 480
+                threshold_lower = 440
+                threshold_higher = 640
                 for note in notes:
-                    if event.key == pygame.K_a and note.x == 0 and note.y > threshold:
-                        CNote.play()
-                    if event.key == pygame.K_s and note.x == 100 and note.y > threshold:
-                        DNote.play()
-                    if event.key == pygame.K_d and note.x == 200 and note.y > threshold:
-                        ENote.play()
-                    if event.key == pygame.K_f and note.x == 300 and note.y > threshold:
-                        FNote.play()
-                    if event.key == pygame.K_g and note.x == 400 and note.y > threshold:
-                        GNote.play()
-                    if event.key == pygame.K_h and note.x == 500 and note.y > threshold:
-                        ANote.play()
-                    if event.key == pygame.K_j and note.x == 600 and note.y > threshold:
-                        BNote.play()
-                    if event.key == pygame.K_k and note.x == 700 and note.y > threshold:
-                        HCNote.play()
+                    if threshold_lower < note.y:
+                        if event.key == pygame.K_a and note.x == 0:
+                            CNote.play()
+                            notes.remove(note)
+                        if event.key == pygame.K_s and note.x == 100:
+                            DNote.play()
+                            notes.remove(note)
+                        if event.key == pygame.K_d and note.x == 200:
+                            ENote.play()
+                            notes.remove(note)
+                        if event.key == pygame.K_f and note.x == 300:
+                            FNote.play()
+                            notes.remove(note)
+                        if event.key == pygame.K_g and note.x == 400:
+                            GNote.play()
+                            notes.remove(note)
+                        if event.key == pygame.K_h and note.x == 500:
+                            ANote.play()
+                            notes.remove(note)
+                        if event.key == pygame.K_j and note.x == 600:
+                            BNote.play()
+                            notes.remove(note)
+                        if event.key == pygame.K_k and note.x == 700:
+                            HCNote.play()
+                            notes.remove(note)
+                for note in notes:
+                    if note.y > threshold_higher:
+                        notes.remove(note)
             if event.type == QUIT:
                 pygame.quit()
                 sys.exit()
@@ -112,10 +131,10 @@ class Note:
         if self.area == "storage":
             self.x = 0
             self.color = GRAY
-        elif self.area == "prod":
+        elif self.area == "bcloud":
             self.x = 100
             self.color = CYAN
-        elif self.area == "bcloud":
+        elif self.area == "prod":
             self.x = 200
             self.color = RED
         elif self.area == "dev":
@@ -144,6 +163,6 @@ class Note:
             self.c += 25
 
     def move(self):
-        self.y += 5
+        self.y += 15
 
 main()
