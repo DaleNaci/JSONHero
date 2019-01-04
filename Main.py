@@ -8,7 +8,7 @@ j = json.loads(f)
 
 # Settings
 
-WINDOW_WIDTH = 800
+WINDOW_WIDTH = 1000
 WINDOW_HEIGHT = 600
 
 # Colors
