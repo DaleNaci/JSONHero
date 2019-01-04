@@ -6,6 +6,11 @@ from pygame.locals import *
 f = open("SBHSData.json", "r").read()
 j = json.loads(f)
 
+# Settings
+
+WINDOW_WIDTH = 800
+WINDOW_HEIGHT = 600
+
 # Colors
 GRAY   = (100, 100, 100)
 WHITE  = (255, 255, 255)
@@ -22,7 +27,7 @@ def main():
 
     pygame.mixer.init()
 
-    screen = pygame.display.set_mode((800, 800))
+    screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
     pygame.display.set_caption('JSON Hero')
 
     # Playable sound for each note of octave (C Major)
@@ -34,6 +39,11 @@ def main():
     ANote = pygame.mixer.Sound('sounds/notes/a.wav')
     BNote = pygame.mixer.Sound('sounds/notes/b.wav')
     HCNote = pygame.mixer.Sound('sounds/notes/high_c.wav')
+
+    # Create rectangle & segments on bottom of screen
+    pygame.draw.rect(screen, WHITE, [0, WINDOW_HEIGHT - 100, WINDOW_WIDTH, 100], 5)
+    for i in range(1, 8):
+        pygame.draw.line(screen, WHITE, [100*i, WINDOW_HEIGHT - 100], [100*i, WINDOW_HEIGHT], 5)
 
     while True: # Main game loop
         for event in pygame.event.get():
