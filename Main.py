@@ -21,6 +21,7 @@ YELLOW = (255,255,  0)
 ORANGE = (255,128,  0)
 PURPLE = (255,  0,255)
 CYAN   = (  0,255,255)
+BLACK  = (  0,  0,  0)
 
 def main():
     pygame.init()
@@ -45,13 +46,14 @@ def main():
 
     while True: # Main game loop
 
+        screen.fill(BLACK)
+
         # Create rectangle & segments on bottom of screen
         pygame.draw.rect(screen, WHITE, [0, WINDOW_HEIGHT - 100, WINDOW_WIDTH, 100], 5)
         for i in range(1, 8):
             pygame.draw.line(screen, WHITE, [100*i, WINDOW_HEIGHT - 100], [100*i, WINDOW_HEIGHT], 5)
 
         pygame.draw.rect(screen, GRAY, [box_X, box_Y, 100, 100], 0)
-        box_X += 1
         box_Y += 1
 
         for event in pygame.event.get():
