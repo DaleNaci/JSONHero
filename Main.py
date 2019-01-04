@@ -59,31 +59,35 @@ def main():
     framecount = 0
 
     notes = []
-
     success = []
+
+    playing = True
 
     while True: # Main game loop
 
         screen.fill(BLACK)
 
         # Create rectangle & segments on bottom of screen
-        pygame.draw.rect(screen, WHITE, [0, WINDOW_HEIGHT - 100, 800, 100], 5)
-        for i in range(1, 8):
-            pygame.draw.line(screen, WHITE, [100 * i, WINDOW_HEIGHT - 100], [100 * i, 800], 5)
+        if playing:
+            pygame.draw.rect(screen, WHITE, [0, WINDOW_HEIGHT - 100, 800, 100], 5)
+            for i in range(1, 8):
+                pygame.draw.line(screen, WHITE, [100 * i, WINDOW_HEIGHT - 100], [100 * i, 800], 5)
 
-        if framecount % random.choice([15, 20, 25]) == 0:
-            json = random.choice(jsonData)
-            jsonData.remove(json)
-            newNote = Note(json, screen, bebasNeue)
-            notes.append(newNote)
-        framecount += 1
+        if playing:
+            if framecount % random.choice([15, 20, 25]) == 0:
+                json = random.choice(jsonData)
+                jsonData.remove(json)
+                newNote = Note(json, screen, bebasNeue)
+                notes.append(newNote)
+            framecount += 1
 
-        for note in notes:
-            note.draw()
-            note.move()
+        if playing:
+            for note in notes:
+                note.draw()
+                note.move()
 
         for event in pygame.event.get():
-            if event.type == pygame.KEYDOWN: # Checks each key
+            if event.type == pygame.KEYDOWN and playing: # Checks each key
                 threshold_lower = 440
                 threshold_higher = 640
                 for note in notes:
@@ -120,6 +124,8 @@ def main():
                             HCNote.play()
                             success.append(note.json)
                             notes.remove(note)
+                        if event.key == pygame.K_q:
+                            playing = False
                 for note in notes:
                     if note.y > threshold_higher:
                         notes.remove(note)
