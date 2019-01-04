@@ -12,7 +12,7 @@ def main():
     pygame.mixer.init()
 
     DISPLAYSURF = pygame.display.set_mode((800, 800))
-    pygame.display.set_caption('Playground')
+    pygame.display.set_caption('JSON Hero')
 
     # Playable sound for each note of octave (C Major)
     CNote = pygame.mixer.Sound('sounds/notes/c.wav')
