@@ -31,7 +31,7 @@ def main():
     pygame.mixer.init()
     pygame.font.init()
 
-    arial = pygame.font.Font('Fonts/BebasNeue.ttf', 30)
+    bebasNeue = pygame.font.Font('Fonts/BebasNeue.ttf', 30)
 
     screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
     pygame.display.set_caption('JSON Hero')
@@ -94,7 +94,7 @@ class Note:
 
     def draw(self):
         pygame.draw.rect(screen, self.color, [self.x, self.y, 100, 100], 0)
-        textSurface = arial.render(self.text, False, (255, 255, 255))
+        textSurface = bebasNeue.render(self.text, False, (255, 255, 255))
         screen.blit(textsurface, (x + 5, y + 5))
 
 

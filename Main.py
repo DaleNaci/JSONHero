@@ -13,7 +13,7 @@ jsonData = json.loads(file)
 WINDOW_WIDTH = 1200
 WINDOW_HEIGHT = 600
 
-arial = pygame.font.SysFont('Arial', 30)
+screen = None
 
 
 # Colors
@@ -33,6 +33,8 @@ def main():
     pygame.mixer.init()
     pygame.font.init()
 
+    bebasNeue = pygame.font.Font('Fonts/BebasNeue.ttf', 20)
+
     screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
     pygame.display.set_caption('JSON Hero')
 
@@ -46,8 +48,6 @@ def main():
     BNote = pygame.mixer.Sound('sounds/notes/b.wav')
     HCNote = pygame.mixer.Sound('sounds/notes/high_c.wav')
 
-    # box_X = 0
-    # box_Y = 0
 
     framecount = 0
 
@@ -65,60 +65,69 @@ def main():
         # pygame.draw.rect(screen, GRAY, [box_X, box_Y, 100, 100], 0)
         # box_Y += 1
 
-        if (framecount % 60 == 0):
-            notes.add(Note(random.choice(list(jsonData.keys()))))
+        if framecount % random.choice([15, 30, 45, 60]) == 0:
+            newNote = Note(random.choice(jsonData), screen, bebasNeue)
+            notes.append(newNote)
+        framecount += 1
 
-
+        for note in notes:
+            note.draw()
+            note.move()
 
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN: # Checks each key
-                if event.key == pygame.K_a:
-                    CNote.play()
-                if event.key == pygame.K_s:
-                    DNote.play()
-                if event.key == pygame.K_d:
-                    ENote.play()
-                if event.key == pygame.K_f:
-                    FNote.play()
-                if event.key == pygame.K_g:
-                    GNote.play()
-                if event.key == pygame.K_h:
-                    ANote.play()
-                if event.key == pygame.K_j:
-                    BNote.play()
-                if event.key == pygame.K_k:
-                    HCNote.play()
+                threshold = 480
+                for note in notes:
+                    if event.key == pygame.K_a and note.x == 0 and note.y > threshold:
+                        CNote.play()
+                    if event.key == pygame.K_s and note.x == 100 and note.y > threshold:
+                        DNote.play()
+                    if event.key == pygame.K_d and note.x == 200 and note.y > threshold:
+                        ENote.play()
+                    if event.key == pygame.K_f and note.x == 300 and note.y > threshold:
+                        FNote.play()
+                    if event.key == pygame.K_g and note.x == 400 and note.y > threshold:
+                        GNote.play()
+                    if event.key == pygame.K_h and note.x == 500 and note.y > threshold:
+                        ANote.play()
+                    if event.key == pygame.K_j and note.x == 600 and note.y > threshold:
+                        BNote.play()
+                    if event.key == pygame.K_k and note.x == 700 and note.y > threshold:
+                        HCNote.play()
             if event.type == QUIT:
                 pygame.quit()
                 sys.exit()
         pygame.display.update()
 
 class Note:
-    def __init__(self, jsonObject):
+    def __init__(self, jsonObject, screen, font):
+        self.screen = screen
         self.jsonObject = jsonObject
-        y = 0
-        text = jsonObject["area"] + "\n" + jsonObject["version"] + "\n" + jsonObject["uptime"] + "\n" + jsonObject["hostname"]
+        self.font = font
+        self.y = 0
+        self.text = self.jsonObject["area"] + "," + self.jsonObject["version"] + "," + self.jsonObject["uptime"] + "," + self.jsonObject["hostname"]
+
         # Find x position and color based on area
         self.area = jsonObject["area"]
-        if area == "storage":
+        if self.area == "storage":
             self.x = 0
             self.color = GRAY
-        elif area == "prod":
+        elif self.area == "prod":
             self.x = 100
-            self.color = WHITE
-        elif area == "bcloud":
+            self.color = CYAN
+        elif self.area == "bcloud":
             self.x = 200
             self.color = RED
-        elif area == "dev":
+        elif self.area == "dev":
             self.x = 300
             self.color = GREEN
-        elif area == "admin":
+        elif self.area == "admin":
             self.x = 400
             self.color = BLUE
-        elif area == "inet":
+        elif self.area == "inet":
             self.x = 500
             self.color = YELLOW
-        elif area == "feed":
+        elif self.area == "feed":
             self.x = 600
             self.color = ORANGE
         else:
@@ -127,9 +136,14 @@ class Note:
 
 
     def draw(self):
-        pygame.draw.rect(screen, self.color, [self.x, self.y, 100, 100], 0)
-        textSurface = arial.render(self.text, False, (0, 0, 0))
-        screen.blit(textsurface, (x + 5, y + 5))
+        pygame.draw.rect(self.screen, self.color, [self.x, self.y, 100, 100], 0)
+        self.c = 0
+        for self.value in self.text.split(","):
+            self.textSurface = self.font.render(self.value, False, (255, 255, 255))
+            self.screen.blit(self.textSurface, (self.x, self.y + self.c))
+            self.c += 25
 
+    def move(self):
+        self.y += 5
 
 main()
