@@ -12,15 +12,15 @@ WINDOW_WIDTH = 800
 WINDOW_HEIGHT = 600
 
 # Colors
-GRAY   = (100, 100, 100)
-WHITE  = (255, 255, 255)
-RED    = (255,   0,   0)
-GREEN  = (  0, 255,   0)
-BLUE   = (  0,   0, 255)
-YELLOW = (255, 255,   0)
-ORANGE = (255, 128,   0)
-PURPLE = (255,   0, 255)
-CYAN   = (  0, 255, 255)
+GRAY   = (100,100,100)
+WHITE  = (255,255,255)
+RED    = (255,  0,  0)
+GREEN  = (  0,255,  0)
+BLUE   = (  0,  0,255)
+YELLOW = (255,255,  0)
+ORANGE = (255,128,  0)
+PURPLE = (255,  0,255)
+CYAN   = (  0,255,255)
 
 def main():
     pygame.init()
@@ -40,12 +40,20 @@ def main():
     BNote = pygame.mixer.Sound('sounds/notes/b.wav')
     HCNote = pygame.mixer.Sound('sounds/notes/high_c.wav')
 
-    # Create rectangle & segments on bottom of screen
-    pygame.draw.rect(screen, WHITE, [0, WINDOW_HEIGHT - 100, WINDOW_WIDTH, 100], 5)
-    for i in range(1, 8):
-        pygame.draw.line(screen, WHITE, [100*i, WINDOW_HEIGHT - 100], [100*i, WINDOW_HEIGHT], 5)
+    box_X = 0
+    box_Y = 0
 
     while True: # Main game loop
+
+        # Create rectangle & segments on bottom of screen
+        pygame.draw.rect(screen, WHITE, [0, WINDOW_HEIGHT - 100, WINDOW_WIDTH, 100], 5)
+        for i in range(1, 8):
+            pygame.draw.line(screen, WHITE, [100*i, WINDOW_HEIGHT - 100], [100*i, WINDOW_HEIGHT], 5)
+
+        pygame.draw.rect(screen, GRAY, [box_X, box_Y, 100, 100], 0)
+        box_X += 1
+        box_Y += 1
+
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN: # Checks each key
                 if event.key == pygame.K_a:
