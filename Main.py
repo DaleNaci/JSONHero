@@ -1,15 +1,20 @@
 import pygame, sys
 import time
 import json
+import random
 from pygame.locals import *
 
-f = open("SBHSData.json", "r").read()
-j = json.loads(f)
+# JSON
+file = open("SBHSData.json", "r").read()
+jsonData = json.loads(file)
 
 # Settings
 
 WINDOW_WIDTH = 1200
 WINDOW_HEIGHT = 600
+
+arial = pygame.font.SysFont('Arial', 30)
+
 
 # Colors
 GRAY   = (100,100,100)
@@ -25,8 +30,8 @@ BLACK  = (  0,  0,  0)
 
 def main():
     pygame.init()
-
     pygame.mixer.init()
+    pygame.font.init()
 
     screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
     pygame.display.set_caption('JSON Hero')
@@ -46,6 +51,8 @@ def main():
 
     framecount = 0
 
+    notes = []
+
     while True: # Main game loop
 
         screen.fill(BLACK)
@@ -58,7 +65,8 @@ def main():
         # pygame.draw.rect(screen, GRAY, [box_X, box_Y, 100, 100], 0)
         # box_Y += 1
 
-        # if (framecount % 60 == 0):
+        if (framecount % 60 == 0):
+            notes.add(Note(random.choice(list(jsonData.keys()))))
 
 
 
@@ -86,10 +94,42 @@ def main():
         pygame.display.update()
 
 class Note:
-    def __init__(self, x, y, jsonObject, color):
-        self.x = x
-        self.y = y
+    def __init__(self, jsonObject):
         self.jsonObject = jsonObject
-        self.Color = color
+        y = 0
+        text = jsonObject["area"] + "\n" + jsonObject["version"] + "\n" + jsonObject["uptime"] + "\n" + jsonObject["hostname"]
+        # Find x position and color based on area
+        self.area = jsonObject["area"]
+        if area == "storage":
+            self.x = 0
+            self.color = GRAY
+        elif area == "prod":
+            self.x = 100
+            self.color = WHITE
+        elif area == "bcloud":
+            self.x = 200
+            self.color = RED
+        elif area == "dev":
+            self.x = 300
+            self.color = GREEN
+        elif area == "admin":
+            self.x = 400
+            self.color = BLUE
+        elif area == "inet":
+            self.x = 500
+            self.color = YELLOW
+        elif area == "feed":
+            self.x = 600
+            self.color = ORANGE
+        else:
+            self.x = 700
+            self.color = PURPLE
+
+
+    def draw(self):
+        pygame.draw.rect(screen, self.color, [self.x, self.y, 100, 100], 0)
+        textSurface = arial.render(self.text, False, (0, 0, 0))
+        screen.blit(textsurface, (x + 5, y + 5))
+
 
 main()
