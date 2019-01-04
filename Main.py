@@ -90,7 +90,24 @@ def main():
             fig = pylab.figure(figsize=[8, 6], dpi=100, facecolor = (0.3, 0.3, 0.3))
             ax = fig.gca()
             ax.set_facecolor((0.3, 0.3, 0.3))
-            ax.bar([1, 2, 3], [3, 3, 3])
+            areas = ["storage", "prod", "admin", "dev", "inet", "bcloud", "feed", "apex", "corp", "1", "tdmz", "null"]
+            areaCounts = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+            for json in success:
+                a = json["area"]
+                if a == "storage": areaCounts[0] += 1
+                if a == "prod": areaCounts[1] += 1
+                if a == "admin": areaCounts[2] += 1
+                if a == "dev": areaCounts[3] += 1
+                if a == "inet": areaCounts[4] += 1
+                if a == "bcloud": areaCounts[5] += 1
+                if a == "feed": areaCounts[6] += 1
+                if a == "apex": areaCounts[7] += 1
+                if a == "corp": areaCounts[8] += 1
+                if a == "1": areaCounts[9] += 1
+                if a == "tdmz": areaCounts[10] += 1
+                if a == "": areaCounts[11] += 1
+
+            ax.bar(areas, areaCounts)
 
             canvas = agg.FigureCanvasAgg(fig)
             canvas.draw()
@@ -191,7 +208,6 @@ class Note:
         else:
             self.x = 700
             self.color = PURPLE
-
 
     def draw(self):
         pygame.draw.rect(self.screen, self.color, [self.x, self.y, 100, 100], 0)
