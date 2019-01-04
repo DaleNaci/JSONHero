@@ -8,7 +8,7 @@ j = json.loads(f)
 
 # Settings
 
-WINDOW_WIDTH = 1000
+WINDOW_WIDTH = 1200
 WINDOW_HEIGHT = 600
 
 # Colors
@@ -41,8 +41,10 @@ def main():
     BNote = pygame.mixer.Sound('sounds/notes/b.wav')
     HCNote = pygame.mixer.Sound('sounds/notes/high_c.wav')
 
-    box_X = 0
-    box_Y = 0
+    # box_X = 0
+    # box_Y = 0
+
+    framecount = 0
 
     while True: # Main game loop
 
@@ -53,8 +55,12 @@ def main():
         for i in range(1, 8):
             pygame.draw.line(screen, WHITE, [100*i, WINDOW_HEIGHT - 100], [100*i, 800], 5)
 
-        pygame.draw.rect(screen, GRAY, [box_X, box_Y, 100, 100], 0)
-        box_Y += 1
+        # pygame.draw.rect(screen, GRAY, [box_X, box_Y, 100, 100], 0)
+        # box_Y += 1
+
+        # if (framecount % 60 == 0):
+
+
 
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN: # Checks each key
@@ -78,5 +84,12 @@ def main():
                 pygame.quit()
                 sys.exit()
         pygame.display.update()
+
+class Note:
+    def __init__(self, x, y, jsonObject, color):
+        self.x = x
+        self.y = y
+        self.jsonObject = jsonObject
+        self.Color = color
 
 main()
