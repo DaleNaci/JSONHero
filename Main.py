@@ -72,16 +72,12 @@ def main():
             pygame.draw.rect(screen, WHITE, [0, WINDOW_HEIGHT - 100, 800, 100], 5)
             for i in range(1, 8):
                 pygame.draw.line(screen, WHITE, [100 * i, WINDOW_HEIGHT - 100], [100 * i, 800], 5)
-
-        if playing:
             if framecount % random.choice([15, 20, 25]) == 0:
                 json = random.choice(jsonData)
                 jsonData.remove(json)
                 newNote = Note(json, screen, bebasNeue)
                 notes.append(newNote)
             framecount += 1
-
-        if playing:
             for note in notes:
                 note.draw()
                 note.move()
