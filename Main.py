@@ -49,9 +49,9 @@ def main():
         screen.fill(BLACK)
 
         # Create rectangle & segments on bottom of screen
-        pygame.draw.rect(screen, WHITE, [0, WINDOW_HEIGHT - 100, WINDOW_WIDTH, 100], 5)
+        pygame.draw.rect(screen, WHITE, [0, WINDOW_HEIGHT - 100, 800, 100], 5)
         for i in range(1, 8):
-            pygame.draw.line(screen, WHITE, [100*i, WINDOW_HEIGHT - 100], [100*i, WINDOW_HEIGHT], 5)
+            pygame.draw.line(screen, WHITE, [100*i, WINDOW_HEIGHT - 100], [100*i, 800], 5)
 
         pygame.draw.rect(screen, GRAY, [box_X, box_Y, 100, 100], 0)
         box_Y += 1
