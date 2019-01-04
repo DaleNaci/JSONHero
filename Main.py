@@ -14,6 +14,7 @@ def main():
     DISPLAYSURF = pygame.display.set_mode((800, 800))
     pygame.display.set_caption('Playground')
 
+    # Playable sound for each note of octave (C Major)
     CNote = pygame.mixer.Sound('sounds/notes/c.wav')
     DNote = pygame.mixer.Sound('sounds/notes/d.wav')
     ENote = pygame.mixer.Sound('sounds/notes/e.wav')
@@ -23,9 +24,9 @@ def main():
     BNote = pygame.mixer.Sound('sounds/notes/b.wav')
     HCNote = pygame.mixer.Sound('sounds/notes/high_c.wav')
 
-    while True:
+    while True: # Main game loop
         for event in pygame.event.get():
-            if event.type == pygame.KEYDOWN:
+            if event.type == pygame.KEYDOWN: # Checks each key
                 if event.key == pygame.K_a:
                     CNote.play()
                 if event.key == pygame.K_s:
