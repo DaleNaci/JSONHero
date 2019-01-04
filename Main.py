@@ -16,7 +16,7 @@ jsonData = json.loads(file)
 
 # Settings
 
-WINDOW_WIDTH = 1200
+WINDOW_WIDTH = 800
 WINDOW_HEIGHT = 600
 
 screen = None
@@ -33,6 +33,7 @@ ORANGE = (255,128,  0)
 PURPLE = (255,  0,255)
 CYAN   = (  0,255,255)
 BLACK  = (  0,  0,  0)
+
 
 def main():
     pygame.init()
@@ -59,6 +60,8 @@ def main():
 
     notes = []
 
+    success = []
+
     while True: # Main game loop
 
         screen.fill(BLACK)
@@ -68,12 +71,12 @@ def main():
         for i in range(1, 8):
             pygame.draw.line(screen, WHITE, [100*i, WINDOW_HEIGHT - 100], [100*i, 800], 5)
 
-        # pygame.draw.rect(screen, GRAY, [box_X, box_Y, 100, 100], 0)
-        # box_Y += 1
-
-        if framecount % random.choice([10, 15, 20]) == 0:
-            newNote = Note(random.choice(jsonData), screen, bebasNeue)
+        if framecount % random.choice([15, 20, 25]) == 0:
+            json = random.choice(jsonData)
+            jsonData.remove(json)
+            newNote = Note(json, screen, bebasNeue)
             notes.append(newNote)
+            print(success)
         framecount += 1
 
         for note in notes:
@@ -88,27 +91,35 @@ def main():
                     if threshold_lower < note.y:
                         if event.key == pygame.K_a and note.x == 0:
                             CNote.play()
+                            success.append(note.json)
                             notes.remove(note)
                         if event.key == pygame.K_s and note.x == 100:
                             DNote.play()
+                            success.append(note.json)
                             notes.remove(note)
                         if event.key == pygame.K_d and note.x == 200:
                             ENote.play()
+                            success.append(note.json)
                             notes.remove(note)
                         if event.key == pygame.K_f and note.x == 300:
                             FNote.play()
+                            success.append(note.json)
                             notes.remove(note)
                         if event.key == pygame.K_g and note.x == 400:
                             GNote.play()
+                            success.append(note.json)
                             notes.remove(note)
                         if event.key == pygame.K_h and note.x == 500:
                             ANote.play()
+                            success.append(note.json)
                             notes.remove(note)
                         if event.key == pygame.K_j and note.x == 600:
                             BNote.play()
+                            success.append(note.json)
                             notes.remove(note)
                         if event.key == pygame.K_k and note.x == 700:
                             HCNote.play()
+                            success.append(note.json)
                             notes.remove(note)
                 for note in notes:
                     if note.y > threshold_higher:
@@ -124,6 +135,7 @@ class Note:
         self.jsonObject = jsonObject
         self.font = font
         self.y = 0
+        self.json = jsonObject
         self.text = self.jsonObject["area"] + "," + self.jsonObject["version"] + "," + self.jsonObject["uptime"] + "," + self.jsonObject["hostname"]
 
         # Find x position and color based on area
