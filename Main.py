@@ -48,17 +48,3 @@ def main():
         pygame.display.update()
 
 main()
-
-
-
-
-# Counts out the number of objects in each storage
-# maps = {}
-# for s in j:
-#     area = s["area"]
-#     if area in map:
-#         map[area] += 1
-#     else:
-#         map[area] = 1
-#
-# print(map)
