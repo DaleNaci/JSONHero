@@ -1,4 +1,6 @@
-import pygame, sys
+import contextlib
+with contextlib.redirect_stdout(None):
+    import pygame, sys
 
 import time
 import json
@@ -16,13 +18,12 @@ from pygame.locals import *
 file = open("SBHSData.json", "r").read()
 jsonData = json.loads(file)
 
-# Settings
+# Pygame Settings
 
 WINDOW_WIDTH = 800
 WINDOW_HEIGHT = 600
 
 screen = None
-
 
 # Colors
 GRAY   = (100,100,100)
@@ -176,6 +177,7 @@ def main():
                 sys.exit()
         pygame.display.update()
 
+# This class is for the JSON "Notes" that are flying down the screen
 class Note:
     def __init__(self, jsonObject, screen, font):
         self.screen = screen
