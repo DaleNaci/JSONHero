@@ -78,7 +78,7 @@ def main():
             pygame.draw.rect(screen, WHITE, [0, WINDOW_HEIGHT - 100, 800, 100], 5)
             for i in range(1, 8):
                 pygame.draw.line(screen, WHITE, [100 * i, WINDOW_HEIGHT - 100], [100 * i, 800], 5)
-            if framecount % random.choice([15, 20, 25]) == 0:
+            if framecount % random.choice([20, 25, 30, 35, 40]) == 0:
                 json = random.choice(jsonData)
                 jsonData.remove(json)
                 newNote = Note(json, screen, bebasNeue)
@@ -117,6 +117,8 @@ def main():
                 if a == "": areaCounts[11] += 1
 
             ax.bar(areas, areaCounts)
+            ax.set_xlabel("Areas")
+            ax.set_ylabel("Number of Hits")
 
             canvas = agg.FigureCanvasAgg(fig)
             canvas.draw()
@@ -219,6 +221,6 @@ class Note:
             self.c += 25
 
     def move(self):
-        self.y += 15
+        self.y += 5
 
 main()
