@@ -43,7 +43,8 @@ def main():
     pygame.mixer.init()
     pygame.font.init()
 
-    bebasNeue = pygame.font.Font('Fonts/BebasNeue.ttf', 21)
+    bebasNeue21 = pygame.font.Font('Fonts/BebasNeue.ttf', 21)
+    bebasNeue40 = pygame.font.Font('Fonts/BebasNeue.ttf', 40)
 
     screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
     pygame.display.set_caption('JSON Hero')
@@ -66,6 +67,9 @@ def main():
     # "Successful" notes (Notes that the player hits) get stored here to be used on the graph
     success = []
 
+    # Score increases by 1 for each successful hit
+    score = 0
+
     playing = True
     isGraphMade = False
 
@@ -82,7 +86,7 @@ def main():
             if framecount % random.choice([20, 25, 30, 35, 40]) == 0:
                 json = random.choice(jsonData)
                 jsonData.remove(json)
-                newNote = Note(json, screen, bebasNeue)
+                newNote = Note(json, screen, bebasNeue21)
                 notes.append(newNote)
             framecount += 1
             for note in notes:
@@ -92,6 +96,10 @@ def main():
             for note in notes:
                 if note.y > threshold_higher:
                     notes.remove(note)
+            textSurface = bebasNeue40.render("Score: " + str(score), False, (255, 255, 255))
+            screen.blit(textSurface, (5, 5))
+            if score >= 100:
+                playing = False
 
         if not playing and not isGraphMade:
             fig = pylab.figure(figsize=[8, 6], dpi=100, facecolor = (0.3, 0.3, 0.3))
@@ -118,6 +126,8 @@ def main():
                 if a == "": areaCounts[11] += 1
 
             ax.bar(areas, areaCounts)
+
+            #Labeling axes
             ax.set_xlabel("Areas")
             ax.set_ylabel("Number of Hits")
 
@@ -133,6 +143,7 @@ def main():
 
             isGraphMade = True
 
+
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN and playing: # Checks each key
                 threshold_lower = 440
@@ -142,34 +153,43 @@ def main():
                             CNote.play()
                             success.append(note.json)
                             notes.remove(note)
+                            score += 1
                         if event.key == pygame.K_s and note.x == 100:
                             DNote.play()
                             success.append(note.json)
                             notes.remove(note)
+                            score += 1
                         if event.key == pygame.K_d and note.x == 200:
                             ENote.play()
                             success.append(note.json)
                             notes.remove(note)
+                            score += 1
                         if event.key == pygame.K_f and note.x == 300:
                             FNote.play()
                             success.append(note.json)
                             notes.remove(note)
+                            score += 1
                         if event.key == pygame.K_g and note.x == 400:
                             GNote.play()
                             success.append(note.json)
                             notes.remove(note)
+                            score += 1
                         if event.key == pygame.K_h and note.x == 500:
                             ANote.play()
                             success.append(note.json)
                             notes.remove(note)
+                            score += 1
                         if event.key == pygame.K_j and note.x == 600:
                             BNote.play()
                             success.append(note.json)
                             notes.remove(note)
+                            score += 1
                         if event.key == pygame.K_k and note.x == 700:
                             HCNote.play()
                             success.append(note.json)
                             notes.remove(note)
+                            score += 1
+                        # Pressing Q forces the graph to appear
                         if event.key == pygame.K_q:
                             playing = False
             if event.type == QUIT:
