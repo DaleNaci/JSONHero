@@ -61,6 +61,8 @@ def main():
     framecount = 0
 
     notes = []
+
+    # "Successful" notes (Notes that the player hits) get stored here to be used on the graph
     success = []
 
     playing = True
@@ -85,6 +87,10 @@ def main():
             for note in notes:
                 note.draw()
                 note.move()
+            threshold_higher = 570
+            for note in notes:
+                if note.y > threshold_higher:
+                    notes.remove(note)
 
         if not playing and not isGraphMade:
             fig = pylab.figure(figsize=[8, 6], dpi=100, facecolor = (0.3, 0.3, 0.3))
@@ -92,6 +98,9 @@ def main():
             ax.set_facecolor((0.3, 0.3, 0.3))
             areas = ["storage", "prod", "admin", "dev", "inet", "bcloud", "feed", "apex", "corp", "1", "tdmz", "null"]
             areaCounts = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+            # areas and areaCounts are related by indexes
+
+            # Loop through successes and find the area for each json object, and then sort it into areaCounts
             for json in success:
                 a = json["area"]
                 if a == "storage": areaCounts[0] += 1
@@ -121,14 +130,9 @@ def main():
 
             isGraphMade = True
 
-
-
-
-
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN and playing: # Checks each key
                 threshold_lower = 440
-                threshold_higher = 640
                 for note in notes:
                     if threshold_lower < note.y:
                         if event.key == pygame.K_a and note.x == 0:
@@ -165,9 +169,6 @@ def main():
                             notes.remove(note)
                         if event.key == pygame.K_q:
                             playing = False
-                for note in notes:
-                    if note.y > threshold_higher:
-                        notes.remove(note)
             if event.type == QUIT:
                 pygame.quit()
                 sys.exit()
